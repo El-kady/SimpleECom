@@ -11,6 +11,11 @@ class Product extends Model
 
     protected $fillable = ['merchant_id', 'title', 'description', 'price', 'currency'];
 
+    public function isMine()
+    {
+        return $this->merchant_id === auth()->user()->load('merchant')->merchant->id;
+    }
+
     public function merchant()
     {
         return $this->belongsTo(Merchant::class);

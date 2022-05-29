@@ -14,16 +14,17 @@ class ProductController extends Controller
 {
     use ApiResponser;
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $merchant_id = $request->user()->load('merchant')->merchant->id;
+        $products = Product::all()->where('merchant_id', '=', $merchant_id);
         return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title'       => 'required|min:5',
+            'title' => 'required|min:5',
             'description' => 'required|min:5',
             'price' => 'required',
             'currency' => 'required'
@@ -32,8 +33,8 @@ class ProductController extends Controller
         if ($validator->fails()) return $this->sendError('Validation Error.', $validator->errors(), 422);
 
         try {
-            $product    = Product::create([
-                'title'       => $request->title,
+            $product = Product::create([
+                'title' => $request->title,
                 'description' => $request->description,
                 'price' => $request->price,
                 'currency' => $request->currency,
@@ -42,7 +43,8 @@ class ProductController extends Controller
             $success = new ProductResource($product);
             $message = 'A product has been successfully created.';
         } catch (Exception $e) {
-            var_dump($e);exit;
+            var_dump($e);
+            exit;
             $success = [];
             $message = 'Oops! Unable to create a new product.';
         }
@@ -55,24 +57,28 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        if (is_null($product)) return $this->$this->sendError('Product not found.');
+        if (is_null($product) || !$product->isMine()) return $this->sendError('Product not found or not yours.');
 
         return $this->sendResponse(new ProductResource($product), 'Product retrieved successfully.');
     }
 
     public function update(Request $request, Product $product)
     {
+
+        if (!$product->isMine()) return $this
+            ->sendError('Product not found or not yours.');
+
         $validator = Validator::make($request->all(), [
-            'title'       => 'required|min:5',
+            'title' => 'required|min:5',
             'description' => 'required|min:5',
             'price' => 'required',
             'currency' => 'required'
         ]);
 
-        if ($validator->fails()) return $this->$this->sendError('Validation Error.', $validator->errors(), 422);
+        if ($validator->fails()) return $this->sendError('Validation Error.', $validator->errors(), 422);
 
         try {
-            $product->title       = $request->title;
+            $product->title = $request->title;
             $product->description = $request->description;
             $product->price = $request->price;
             $product->currency = $request->currency;
@@ -92,10 +98,11 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         try {
+            if (is_null($product) || !$product->isMine()) return $this->sendError('Product not found or not yours.');
             $product->delete();
             return $this->sendResponse([], 'The product has been successfully deleted.');
         } catch (Exception $e) {
-            return $this->$this->sendError('Oops! Unable to delete product.');
+            return $this->sendError('Oops! Unable to delete product.');
         }
     }
 }
