@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\MerchantController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 
@@ -22,6 +22,7 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:api')->group(function () {
         Route::post('merchant', [MerchantController::class, 'save']);
+        Route::resource('products', ProductController::class);
     });
 });
 
