@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Merchant;
+use App\Models\Cart;
 use App\Models\User;
-use App\Traits\ApiResponser;
+use App\Traits\ProductHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +13,7 @@ use Exception;
 
 class AuthController extends Controller
 {
-    use ApiResponser;
+    use ProductHelpers;
 
     public function login(Request $request)
     {
@@ -58,7 +58,7 @@ class AuthController extends Controller
             ]);
 
             if($request->user_type === "MERCHANT"){
-                $user->merchant()->save(new Merchant());
+                $user->merchant()->save(new Cart());
             }
 
             $success['name']  = $user->name;

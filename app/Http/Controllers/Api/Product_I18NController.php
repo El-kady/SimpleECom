@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Product_I18NResource;
 use App\Models\Product;
 use App\Models\Product_I18N;
-use App\Traits\ApiResponser;
+use App\Traits\ProductHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 
 class Product_I18NController extends Controller
 {
-    use ApiResponser;
+    use ProductHelpers;
 
     public function index()
     {

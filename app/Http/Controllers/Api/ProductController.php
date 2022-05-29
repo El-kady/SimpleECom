@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Traits\ApiResponser;
+use App\Traits\ProductHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 
 class ProductController extends Controller
 {
-    use ApiResponser;
+    use ProductHelpers;
 
     public function index(Request $request)
     {
@@ -43,8 +43,6 @@ class ProductController extends Controller
             $success = new ProductResource($product);
             $message = 'A product has been successfully created.';
         } catch (Exception $e) {
-            var_dump($e);
-            exit;
             $success = [];
             $message = 'Oops! Unable to create a new product.';
         }

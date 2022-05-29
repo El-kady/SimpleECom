@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Merchant;
+use App\Models\Cart;
 use App\Models\User;
-use App\Traits\ApiResponser;
+use App\Traits\ProductHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class MerchantController extends Controller
 {
-    use ApiResponser;
+    use ProductHelpers;
 
     public function save(Request $request){
 
@@ -22,7 +22,7 @@ class MerchantController extends Controller
         if ($validator->fails()) return $this->sendError('Validation Error.', $validator->errors(), 422);
 
         try {
-            Merchant::where("user_id", $request->user()->id)
+            Cart::where("user_id", $request->user()->id)
                 ->update([
                     "store_name" => $request->store_name,
                     "shipping_cost" => $request->shipping_cost,

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ProductHelpers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, ProductHelpers;
 
     protected $fillable = ['merchant_id', 'title', 'description', 'price', 'currency'];
 
