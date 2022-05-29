@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMerchantProfilesTable extends Migration
+class CreateMerchantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateMerchantProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('merchant_profiles', function (Blueprint $table) {
+        Schema::create('merchants', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("user_id");
 
-            $table->string('store_name');
-            $table->integer("shipping_cost");
-            $table->boolean("vat_included");
-            $table->integer("vat_percentage");
+            $table->string('store_name')->nullable();
+            $table->integer("shipping_cost")->default(0);
+            $table->boolean("vat_included")->default(0);
+            $table->integer("vat_percentage")->default(0);
 
             $table->timestamps();
         });

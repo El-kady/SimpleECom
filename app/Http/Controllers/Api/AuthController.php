@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Merchant;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
@@ -13,12 +14,7 @@ use Exception;
 class AuthController extends Controller
 {
     use ApiResponser;
-    /**
-     * User login API method
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -41,12 +37,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * User registration API method
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -66,6 +56,10 @@ class AuthController extends Controller
                 'password' => bcrypt($request->password),
                 'user_type' => $request->user_type,
             ]);
+
+            if($request->user_type === "MERCHANT"){
+                $user->merchant()->save(new Merchant());
+            }
 
             $success['name']  = $user->name;
             $message          = 'A user has been successfully created.';
