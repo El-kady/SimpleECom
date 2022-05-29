@@ -20,6 +20,8 @@ Route::prefix('v1')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
 
     Route::middleware('auth:api')->group(function () {
+        Route::post('register', [AuthController::class, 'register']);
+
         //Route::resource('posts', PostController::class);
     });
 });

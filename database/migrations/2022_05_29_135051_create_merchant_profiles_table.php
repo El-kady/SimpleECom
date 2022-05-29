@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMerchantProfile extends Migration
+class CreateMerchantProfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMerchantProfile extends Migration
      */
     public function up()
     {
-        Schema::create('merchant_profile', function (Blueprint $table) {
+        Schema::create('merchant_profiles', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("user_id");
 
@@ -33,6 +33,6 @@ class CreateMerchantProfile extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('merchant_profile');
+        Schema::dropIfExists('merchant_profiles');
     }
 }
